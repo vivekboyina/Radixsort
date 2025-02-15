@@ -1,0 +1,50 @@
+#include<stdio.h>
+int maxy(int arr[],int n)
+{
+	int max = arr[0];
+	int i;
+	for(i = 0; i < n; i++)
+	{
+		if(arr[i] > max) max = arr[i];
+	}
+	printf("%d", max);
+	return max;
+}
+void radix(int arr[],int n)
+{
+	int max = maxy(arr,n);
+	int bucket[10][n];
+  int cnt[10] = {0};
+  int e = 1;
+	while(max)
+	{
+    for(int i = 0; i < 10; i++) cnt[i] = 0;
+		for(int i = 0; i < n; i++)
+		{
+			int pos = (arr[i]/e) % 10;
+			bucket[pos][cnt[pos]] = arr[i];
+			cnt[pos]++;
+		}
+		int c = 0;
+		for(int i = 0; i < 10; i++)
+		{
+			for(int j = 0; j < cnt[i]; j++)
+			{
+				arr[c] = bucket[i][j];
+				c++;
+			}
+		}
+		e*=10;
+		max/=10;
+	}
+}
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	int arr[n];
+	for(int i = 0; i < n; i++) scanf("%d", &arr[i]);
+	radix(arr,n);
+  for(int i = 0; i < n; i++) printf("%d ", arr[i]);
+	return 0;
+}
